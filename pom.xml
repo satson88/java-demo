@@ -43,4 +43,18 @@
 		</plugins>
 	</build>
 
+	<!--  deploy libs to nexus repository -->
+	<distributionManagement>
+		<repository>
+		<id>nexus</id>
+		<url>http://192.168.7.119:9081/repository/java-demo</url>
+		<!--<name>Nexus Releases</name>-->
+		</repository>
+		<snapshotRepository>
+		<id>nexus</id>
+		<url>http://192.168.7.119:9081/repository/jave-demo</url>
+		<!--<name>Nexus Snapshot</name>-->
+		</snapshotRepository>
+	</distributionManagement>
+
 </project>
