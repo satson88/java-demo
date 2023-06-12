@@ -43,6 +43,9 @@
 		</plugins>
 	</build>
 
+	<artifactId>SpringBootExecutableJar</artifactId>
+	<version>0.0.2-SNAPSHOT</version>
+
 	<!--  deploy libs to nexus repository -->
 	<distributionManagement>
 		<repository>
