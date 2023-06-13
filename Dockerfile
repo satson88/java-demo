@@ -15,7 +15,7 @@ COPY src ./src
 RUN mvn package -DskipTests
 
 # Use a lightweight base image with JRE only
-FROM adoptopenjdk:17-jre-hotspot AS production
+FROM openjdk:17-jdk-slim AS production
 
 # Set the working directory in the container
 WORKDIR /app
