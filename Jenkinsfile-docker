@@ -66,7 +66,7 @@ pipeline {
                 sh '''
                 ssh root@10.0.1.207 <<  EOF
                 
-                docker rm -f ${containerName} || true
+                docker rm  ${containerName} 1> /dev/null 2>&1
 
                 docker run -d --name ${containerName} ${dockerArgs} ${registry}/${imageName}:${version}
 
