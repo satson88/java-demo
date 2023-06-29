@@ -19,21 +19,6 @@ pipeline {
                 cleanWs()
             }
         }
-        stage('Read POM') {
-            steps {
-                script {
-                    def pomContent = readFile 'pom.xml'
-                    def version = pomContent.read().text().replaceAll('\\s+', '').replaceAll('<[^>]+>', '').findAll(/<version>(.*?)<\/version>/)[0][1]
-                    def name = pomContent.read().text().replaceAll('\\s+', '').replaceAll('<[^>]+>', '').findAll(/<artifactId>(.*?)<\/artifactId>/)[0][1]
-
-                    // Print the extracted values
-                    echo "Version: ${version}"
-                    echo "Name: ${name}"
-
-                    // You can use these values in subsequent stages or steps as needed
-                }
-            }
-        }
 
         stage('SCM'){
             steps {
@@ -74,6 +59,13 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh ''' 
+                name=`cat pom.xml | grep -A1 java-demo | grep artifactId | awk -F'[><]' '{print $3}'`
+                version=`cat pom.xml | grep -A1 java-demo | grep version | awk -F'[><]' '{print $3}'`
+                
+                echo "------------------------"
+                echo $name
+                echo $version
+                echo "-------------------------"
                 ssh root@10.0.1.207 < EOF
                 cd /java-app
                 curl  -o java-app.jar -u admin:pass123 "http://nexus.manolabs.co.in:8081/repository/java-demo/com/sen/$name/$version/$name-$version.jar"
