@@ -71,7 +71,10 @@ pipeline {
                 cd /java-app
                 curl  -o java-app.jar -u admin:pass123 "http://nexus.manolabs.co.in:8081/repository/java-demo/com/sen/$name/$version/$name-$version.jar"
                 
+                kill $(pgrep -f your-jar-file.jar)
+
                 nohup java -jar java-app.jar > /dev/null 2>&1 &
+                
                 EOF
                 '''
             }
