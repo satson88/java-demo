@@ -37,6 +37,13 @@ pipeline {
                 sh "sudo docker build -t ${registry}/${imageName}:${version} -f ${dockerfilePath} ."
             }
         }
+
+         stage('Unit Test') {
+            steps {
+                
+                sh "/opt/maven/bin/mvn test"
+            }
+        }
         
         stage('Push to Artifcatory') {
             steps {
