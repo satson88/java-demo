@@ -22,9 +22,9 @@ pipeline {
         stage('Read POM') {
             steps {
                 script {
-                    def pom = readMavenPom file: 'pom.xml'
-                    def version = pom.version
-                    def name = pom.artifactId
+                    def pomContent = readFile 'pom.xml'
+                    def version = pomContent.read().text().replaceAll('\\s+', '').replaceAll('<[^>]+>', '').findAll(/<version>(.*?)<\/version>/)[0][1]
+                    def name = pomContent.read().text().replaceAll('\\s+', '').replaceAll('<[^>]+>', '').findAll(/<artifactId>(.*?)<\/artifactId>/)[0][1]
 
                     // Print the extracted values
                     echo "Version: ${version}"
