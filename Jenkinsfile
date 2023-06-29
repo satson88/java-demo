@@ -67,10 +67,11 @@ pipeline {
                 echo $name
                 echo $version
                 echo "-------------------------"
-                ssh root@10.0.1.207 <<- 'EOF'
+                ssh root@10.0.1.207 <<  EOF
                 cd /java-app
                 curl  -o java-app.jar -u admin:pass123 "http://nexus.manolabs.co.in:8081/repository/java-demo/com/sen/$name/$version/$name-$version.jar"
                 sh start.sh
+                exit
                 EOF
                 '''
             }
