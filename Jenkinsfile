@@ -71,7 +71,7 @@ pipeline {
                 cd /java-app
                 curl  -o java-app.jar -u admin:pass123 "http://nexus.manolabs.co.in:8081/repository/java-demo/com/sen/$name/$version/$name-$version.jar"
             
-                java -jar java-app.jar"
+                java -jar java-app.jar
                 EOF
                 '''
             }
