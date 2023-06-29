@@ -4,7 +4,7 @@ pipeline {
     environment {
         registry = "sen31088"  // Replace with your Docker registry URL
         DOCKERHUB_CREDENTIALS= credentials('docker-sen31088')
-        imageName = "Java-demo"  // Replace with your desired image name
+        imageName = "java-demo"  // Replace with your desired image name
         containerName = "java-app-container"  // Replace with your desired container name
         dockerfilePath = "./Dockerfile"  // Replace with the path to your Dockerfile
         dockerArgs = "-p 8080:80"  // Replace with your desired container arguments
