@@ -70,8 +70,8 @@ pipeline {
                 ssh root@10.0.1.207 << EOF
                 cd /java-app
                 curl  -o java-app.jar -u admin:pass123 "http://nexus.manolabs.co.in:8081/repository/java-demo/com/sen/$name/$version/$name-$version.jar"
-            
-                java -jar java-app.jar
+                
+                nohup java -jar java-app.jar > /dev/null 2>&1 &
                 EOF
                 '''
             }
