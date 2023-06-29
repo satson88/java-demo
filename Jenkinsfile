@@ -9,8 +9,14 @@ pipeline {
         dockerfilePath = "./Dockerfile"  // Replace with the path to your Dockerfile
         dockerArgs = "-p 8080:80"  // Replace with your desired container arguments
         version = sh(script: 'jq \'.version\' version.json', returnStdout: true).trim() */
-        name = sh(script: 'cat pom.xml | grep -A1 java-demo | grep artifactId | awk -F'[><]' '{print $3}'' , returnStdout: true).trim()
-        version=sh(script: 'cat pom.xml | grep -A1 java-demo | grep version | awk -F'[><]' '{print $3}'' , returnStdout: true).trim()
+        def pom = readMavenPom file: 'pom.xml'
+        def version = pom.version
+        def name = pom.artifactId
+        // Print the extracted values
+        echo "Version: ${version}"
+        echo "Name: ${name}"
+        //name = sh(script: 'cat pom.xml | grep -A1 java-demo | grep artifactId | awk -F'[><]' '{print $3}'' , returnStdout: true).trim()
+        //version=sh(script: 'cat pom.xml | grep -A1 java-demo | grep version | awk -F'[><]' '{print $3}'' , returnStdout: true).trim()
     }
     stages {
         stage('Clean WS') { 
