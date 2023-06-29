@@ -1,7 +1,7 @@
 pipeline { 
     agent any
 
-    environment {
+    //environment {
         /*registry = "sen31088"  // Replace with your Docker registry URL
         DOCKERHUB_CREDENTIALS= credentials('docker-sen31088')
         imageName = "webapp"  // Replace with your desired image name
@@ -11,8 +11,14 @@ pipeline {
         version = sh(script: 'jq \'.version\' version.json', returnStdout: true).trim() */
         //name = sh(script: 'cat pom.xml | grep -A1 java-demo | grep artifactId | awk -F'[><]' '{print $3}'' , returnStdout: true).trim()
         //version=sh(script: 'cat pom.xml | grep -A1 java-demo | grep version | awk -F'[><]' '{print $3}'' , returnStdout: true).trim()
-    }
+    //}
+    
     stages {
+        stage('Clean WS') { 
+            steps { 
+                cleanWs()
+            }
+        }
         stage('Read POM') {
             steps {
                 script {
@@ -28,13 +34,7 @@ pipeline {
                 }
             }
         }
-    }
-    stages {
-        stage('Clean WS') { 
-            steps { 
-                cleanWs()
-            }
-        }
+
         stage('SCM'){
             steps {
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'sen', url: 'https://github.com/sen31088/app1.git']])
