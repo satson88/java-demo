@@ -28,7 +28,7 @@ pipeline {
         
         stage('Build') {
             steps {
-                   sh "mvn clean install"
+                   sh "/opt/maven/bin/mvn clean install"
                     		 
                 }
             }
@@ -37,19 +37,19 @@ pipeline {
         stage('Unit Test') {
             steps {
                 
-                sh "mvn test"
+                sh "/opt/maven/bin/mvn test"
             }
         }
         
         stage('Push to Artifcatory') {
             steps {
-                sh "mvn deploy"
+                sh "/opt/maven/bin/mvn deploy"
             }
         }
 
         stage('Code Analysis') {
             steps {
-                sh "mvn clean verify sonar:sonar \
+                sh "/opt/maven/bin/mvn clean verify sonar:sonar \
                     -Dsonar.projectKey=java-demo \
                     -Dsonar.host.url=http://sonar.manolabs.co.in:9000 \
                     -Dsonar.login=sqp_73c10b13df89fb590df8a43b7a81107f2fda4814"
