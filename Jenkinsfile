@@ -22,13 +22,13 @@ pipeline {
 
         stage('SCM'){
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'sen', url: 'https://github.com/sen31088/java-demo.git']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/satson88/java-demo.git']])
             }
         }
         
         stage('Build') {
             steps {
-                   sh "/opt/maven/bin/mvn clean install"
+                   sh "/usr/bin/mvn clean install"
                     		 
                 }
             }
@@ -37,16 +37,16 @@ pipeline {
         stage('Unit Test') {
             steps {
                 
-                sh "/opt/maven/bin/mvn test"
+                sh "/usr/bin/mvn test"
             }
         }
         
         stage('Push to Artifcatory') {
             steps {
-                sh "/opt/maven/bin/mvn deploy"
+                sh "/usr/bin/mvn deploy"
             }
         }
-
+/*
         stage('Code Analysis') {
             steps {
                 sh "/opt/maven/bin/mvn clean verify sonar:sonar \
@@ -56,7 +56,7 @@ pipeline {
             }
         }
 
-
+*/
         stage('Deploy') {
             steps {
                 sh ''' 
@@ -67,9 +67,9 @@ pipeline {
                 echo $name
                 echo $version
                 echo "-------------------------"
-                ssh root@10.0.1.207 <<  EOF
+                ssh root@10.0.1.191 <<  EOF
                 cd /java-app
-                curl  -o java-app.jar -u admin:pass123 "http://nexus.manolabs.co.in:8081/repository/java-demo/com/sen/$name/$version/$name-$version.jar"
+                curl  -o java-app.jar -u admin:pass123 "http://3.6.37.123:8081/repository/java-demo/com/sen/$name/$version/$name-$version.jar"
                 sh start.sh
                 exit
                 EOF
