@@ -42,7 +42,7 @@ pipeline {
          stage('Unit Test') {
             steps {
                 
-                sh "/opt/maven/bin/mvn test"
+                sh "/usr/bin/mvn test"
             }
         } 
         
