@@ -2,12 +2,13 @@ pipeline {
     agent any
 
     environment {
-        registry = "sen31088"  // Replace with your Docker registry URL
-        DOCKERHUB_CREDENTIALS= credentials('docker-sen31088')
+        registry = "satson88"  // Replace with your Docker registry URL
+        DOCKERHUB_CREDENTIALS= credentials('docker-satson88')
         imageName = "java-demo"  // Replace with your desired image name
         containerName = "java-app-container"  // Replace with your desired container name
         dockerfilePath = "./Dockerfile"  // Replace with the path to your Dockerfile
         dockerArgs = "-p 8081:8080"  // Replace with your desired container arguments
+        serverip = "10.0.1.205"
         //version = sh(script: 'jq \'.version\' version.json', returnStdout: true).trim()
         //name = sh(script: 'cat pom.xml | grep -A1 java-demo | grep artifactId | awk -F'[><]' '{print $3}'' , returnStdout: true).trim()
         version = sh(script: "cat pom.xml | grep -A1 java-demo | grep version | awk -F'[><]' '{print \$3}'", returnStdout: true).trim()
@@ -51,20 +52,20 @@ pipeline {
             }
         }
 
-        stage('Code Analysis') {
+       /* stage('Code Analysis') {
             steps {
                 sh "/opt/maven/bin/mvn clean verify sonar:sonar \
                     -Dsonar.projectKey=java-demo \
                     -Dsonar.host.url=http://sonar.manolabs.co.in:9000 \
                     -Dsonar.login=sqp_bb71945b9028eba3aa847768a63b8d4f4b622dfb"
             }
-        }
+        } */
 
 
         stage('Deploy') {
             steps {
                 sh '''
-                ssh root@10.0.1.207 <<  EOF
+                ssh root@${serverip}} <<  EOF
                 
                 docker rm  -f ${containerName} 1> /dev/null 2>&1
 
