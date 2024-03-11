@@ -65,7 +65,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                ssh root@${serverip}} <<  EOF
+                ssh root@${serverip} <<  EOF
                 
                 docker rm  -f ${containerName} 1> /dev/null 2>&1
 
