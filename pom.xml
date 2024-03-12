@@ -47,13 +47,13 @@
 	<distributionManagement>
 		<repository>
 		<id>nexus</id>
-		<url>http://3.110.187.217:8081/repository/java-demo/</url>
+		<url>http://nexus.sathyalabs.online:8081/repository/java-demo/</url>
 		     
 		<!--<name>Nexus Releases</name>-->
 		</repository>
 		<snapshotRepository>
 		<id>nexus</id>
-		<url>http://3.110.187.217:8081/repository/java-demo/</url>
+		<url>http://nexus.sathyalabs.online:8081/repository/java-demo/</url>
 		<!--<name>Nexus Snapshot</name>-->
 		</snapshotRepository>
 	</distributionManagement>
