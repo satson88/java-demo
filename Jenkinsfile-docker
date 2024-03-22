@@ -54,7 +54,7 @@ pipeline {
 
         stage('Code Analysis') {
             steps {
-                sh "/opt/maven/bin/mvn clean verify sonar:sonar \
+                sh "/usr/share/maven/bin/mvn sonar:sonar \
                     -Dsonar.projectKey=java-demo \
                     -Dsonar.host.url=http://3.110.181.9:9000 \
                     -Dsonar.login=6b614f5b8acedf3d6193e1eabec0acc37c0281b5"
