@@ -56,8 +56,8 @@ pipeline {
             steps {
                 sh "/opt/maven/bin/mvn clean verify sonar:sonar \
                     -Dsonar.projectKey=java-demo \
-                    -Dsonar.host.url=http://sonar.manolabs.co.in:9000 \
-                    -Dsonar.login=sqp_bb71945b9028eba3aa847768a63b8d4f4b622dfb"
+                    -Dsonar.host.url=http://3.110.181.9:9000 \
+                    -Dsonar.login=6b614f5b8acedf3d6193e1eabec0acc37c0281b5"
             }
         } 
 
