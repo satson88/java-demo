@@ -52,32 +52,57 @@ pipeline {
             }
         }
 
-       /* stage('Code Analysis') {
+        stage('Code Analysis') {
             steps {
                 sh "/opt/maven/bin/mvn clean verify sonar:sonar \
                     -Dsonar.projectKey=java-demo \
                     -Dsonar.host.url=http://sonar.manolabs.co.in:9000 \
                     -Dsonar.login=sqp_bb71945b9028eba3aa847768a63b8d4f4b622dfb"
             }
-        } */
+        } 
 
 
         stage('Deploy') {
             steps {
-                sh '''
-                ssh root@${serverip} <<  EOF
-                
-                docker rm  -f ${containerName} 1> /dev/null 2>&1
-
-                sleep 5
-
-                docker run -d --name ${containerName} ${dockerArgs} ${registry}/${imageName}:${version}
-
-                exit
-
-                EOF
-
+                script {
+                    // Define Kubernetes Deployment YAML
+                   def jenkinsDeployment = '''
+                        apiVersion: apps/v1
+                        kind: Deployment
+                        metadata:
+                            name: java-demo
+                        spec:
+                            replicas: 1
+                            selector:
+                              matchLabels:
+                                app: java-demo
+                            template:
+                              metadata:
+                                labels:
+                                  app: java-demo
+                              spec:
+                                containers:
+                                - name: java-demo
+                                  image: satson88/java-demo:3.0
+                    ---
+                        apiVersion: v1
+                        kind: Service
+                        metadata:
+                          name: svc-java-demo
+                        spec:
+                          selector:
+                            app: java-demo
+                         ports:
+                            - protocol: TCP
+                              port: 80
+                              targetPort: 8080
+                          type: LoadBalancer
                 '''
+                    // Apply Deployment using kubectl
+                    kubeDeploy(configFile: "${KUBECONFIG}", namespace: 'default', manifests: "${deploymentYaml}\n---\n${serviceYaml}")
+                    sh "echo '${jenkinsDeployment}' | kubectl apply -f -"
+        
+                
             }
         }
     }
