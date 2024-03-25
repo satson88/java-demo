@@ -51,60 +51,31 @@ pipeline {
                 sh "sudo docker push ${registry}/${imageName}:${version}"
             }
         }
-
+/*
         stage('Code Analysis') {
             steps {
                 sh "/usr/bin/mvn clean verify sonar:sonar \
                     -Dsonar.projectKey=java-demo \
-                    -Dsonar.host.url=http://3.110.181.9:9000 \
+                    -Dsonar.host.url=http://3.108.185.26:9000 \
                     -Dsonar.login=6b614f5b8acedf3d6193e1eabec0acc37c0281b5"
             }
         } 
 
-
-        stage('Deploy') {
+*/
+       stage('Deploy') {
             steps {
-                script {
-                    // Define Kubernetes Deployment YAML
-                   def jenkinsDeployment = '''
-                        apiVersion: apps/v1
-                        kind: Deployment
-                        metadata:
-                            name: java-demo
-                        spec:
-                            replicas: 1
-                            selector:
-                              matchLabels:
-                                app: java-demo
-                            template:
-                              metadata:
-                                labels:
-                                  app: java-demo
-                              spec:
-                                containers:
-                                - name: java-demo
-                                  image: satson88/java-demo:3.0
-                    ---
-                        apiVersion: v1
-                        kind: Service
-                        metadata:
-                          name: svc-java-demo
-                        spec:
-                          selector:
-                            app: java-demo
-                         ports:
-                            - protocol: TCP
-                              port: 80
-                              targetPort: 8080
-                          type: LoadBalancer
-                '''
-                    // Apply Deployment using kubectl
-                    kubeDeploy(configFile: "${KUBECONFIG}", namespace: 'default', manifests: "${deploymentYaml}\n---\n${serviceYaml}")
-                    sh "echo '${jenkinsDeployment}' | kubectl apply -f -"
-        
-                
-            }
+                 sh '''
+                 
+                 export KUBECONFIG=/var/lib/jenkins/kubeconfig
+
+                 sed "s/{{theVersion}}/$version/g" resources/deployment.yaml > deployment-amend.yaml
+
+                 kubectl apply -f deployment-amend.yaml
+                 
+                 kubectl apply -f resource/service.yaml
+                 
+                 '''
+                }
         }
     }
-}
 }
